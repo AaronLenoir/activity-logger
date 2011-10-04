@@ -1,0 +1,9 @@
+Builds\*
+*\bin
+*\obj
+*.dll
+*.pdb
+*.exe
+*.suo
+*.exe.config
+test.dat
