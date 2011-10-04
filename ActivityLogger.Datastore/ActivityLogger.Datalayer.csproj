@@ -59,6 +59,7 @@
     <Compile Include="Activity.cs" />
     <Compile Include="ActivityCollection.cs" />
     <Compile Include="ActivityDataStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
