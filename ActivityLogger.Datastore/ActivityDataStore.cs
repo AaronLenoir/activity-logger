@@ -16,7 +16,7 @@ namespace ActivityLogger.Datalayer
         protected static Object gInstancesLock = new Object();
         protected const string cCreateActivityTableQry = "CREATE TABLE Activity(timestamp INTEGER, description STRING)";
         protected const string cInsertActivityQry = "INSERT INTO Activity (timestamp, description) VALUES(@timestamp, @description)";
-        protected const string cSelectDayActivity = "SELECT timestamp, description FROM Activity WHERE timestamp >= @beginTime AND timestamp <= @endTime";
+        protected const string cSelectDayActivity = "SELECT timestamp, description FROM Activity WHERE timestamp >= @beginTime AND timestamp <= @endTime ORDER BY timestamp";
 
         protected string mFilepath;
         protected Object writeLock = new Object();
