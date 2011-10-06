@@ -1,4 +1,4 @@
-Builds\*
+Builds\
 *\bin
 *\obj
 *.dll
@@ -6,4 +6,6 @@ Builds\*
 *.exe
 *.suo
 *.exe.config
+*.zip
+*.dat
 test.dat

@@ -65,7 +65,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite">
-      <HintPath>..\..\..\..\..\..\Program Files\System.Data.SQLite\bin\System.Data.SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\System.Data.SQLite\bin\System.Data.SQLite.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -81,10 +81,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy *.dll $(SolutionDir)Builds\$(ConfigurationName) /C /Y</PostBuildEvent>
+    <PostBuildEvent>mkdir $(SolutionDir)Builds\$(ConfigurationName)
+xcopy *.dll $(SolutionDir)Builds\$(ConfigurationName) /C /Y</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>del $(SolutionDir)Builds\$(ConfigurationName)\* /F /Q</PreBuildEvent>
+    <PreBuildEvent>mkdir $(SolutionDir)Builds\$(ConfigurationName)
+del $(SolutionDir)Builds\$(ConfigurationName)\* /F /Q</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
