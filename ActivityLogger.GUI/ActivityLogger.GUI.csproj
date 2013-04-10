@@ -118,10 +118,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>mkdir $(SolutionDir)Builds\$(ConfigurationName)
-xcopy *.exe $(SolutionDir)Builds\$(ConfigurationName) /C /Y
-xcopy *.dll $(SolutionDir)Builds\$(ConfigurationName) /C /Y
-xcopy *.config $(SolutionDir)Builds\$(ConfigurationName) /C /Y</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
