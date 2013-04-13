@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<?define ProductVersion = "1.0.0"?>
+<?define ProductGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+   <Product Id="$(var.ProductGuid)"
+			UpgradeCode="$(var.ProductGuid)" 
+            Name="Activity Logger"
+			Version="$(var.ProductVersion)"
+			Manufacturer="Aaron Lenoir"
+			Language="1033">
+      <Package InstallerVersion="200"
+			   Compressed="yes"
+			   Comments="Windows Installer Package"/>
+      
+	  <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
+      
+	  <!-- Include a user interface - to be modified later -->
+      <UIRef Id="WixUI_InstallDir" />
+	  <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
+	  
+	  <Icon Id="ProductIcon" SourceFile="..\ActivityLogger.GUI\Images\Apps-preferences-system-time.ico"/>
+      <Property Id="ARPPRODUCTICON" Value="ProductIcon"/>
+      <Property Id="ARPHELPLINK" Value="https://github.com/AaronLenoir/activity-logger/wiki"/>
+      <Property Id="ARPURLINFOABOUT" Value="https://github.com/AaronLenoir/activity-logger/wiki"/>
+      <Property Id="ARPNOREPAIR" Value="1"/>
+	  <Property Id="ApplicationFolderName" Value="Activity Logger"/>
+	  <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+	  
+	  <!-- Upgrade Logic -->
+	  <Upgrade Id="$(var.ProductGuid)">
+         <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
+         <UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" IncludeMaximum="no" 
+                         Property="OLDERVERSIONBEINGUPGRADED"/>	  
+      </Upgrade>
+      <Condition Message="A newer version of this software is already installed.">NOT NEWERVERSIONDETECTED</Condition> 
+ 
+	  <!-- File deployment -->
+      <Directory Id="TARGETDIR" Name="SourceDir">
+         <Directory Id="ProgramFilesFolder">
+            <Directory Id="APPLICATIONFOLDER" Name="Activity Logger">
+               <Component Id="ApplicationFiles" Guid="649939bc-4828-4dc7-8913-456ccbd22fb7">
+                  <File Id="App" Source="..\Builds\Release\ActivityLogger.GUI.exe"/>
+                  <File Id="Config" Source="..\Builds\Release\ActivityLogger.GUI.exe.config"/>
+                  <File Id="Datalayer" Source="..\Builds\Release\ActivityLogger.Datalayer.dll"/>
+                  <File Id="Tracing" Source="..\Builds\Release\ActivityLogger.Tracing.dll"/>
+                  <File Id="SQLite" Source="..\Builds\Release\SQLite.Interop.dll"/>
+                  <File Id="SQLiteConnector" Source="..\Builds\Release\System.Data.SQLite.dll"/>
+               </Component>
+            </Directory>
+         </Directory>
+      </Directory>
+	  
+      <InstallExecuteSequence>
+         <RemoveExistingProducts After="InstallValidate"/>
+      </InstallExecuteSequence>
+	  
+      <Feature Id="DefaultFeature" Level="1">
+         <ComponentRef Id="ApplicationFiles"/>
+      </Feature>
+   </Product>
+</Wix>
