@@ -39,12 +39,12 @@
          <Directory Id="ProgramFilesFolder">
             <Directory Id="APPLICATIONFOLDER" Name="Activity Logger">
                <Component Id="ApplicationFiles" Guid="649939bc-4828-4dc7-8913-456ccbd22fb7">
-                  <File Id="App" Source="..\Builds\Release\ActivityLogger.GUI.exe"/>
-                  <File Id="Config" Source="..\Builds\Release\ActivityLogger.GUI.exe.config"/>
-                  <File Id="Datalayer" Source="..\Builds\Release\ActivityLogger.Datalayer.dll"/>
-                  <File Id="Tracing" Source="..\Builds\Release\ActivityLogger.Tracing.dll"/>
-                  <File Id="SQLite" Source="..\Builds\Release\SQLite.Interop.dll"/>
-                  <File Id="SQLiteConnector" Source="..\Builds\Release\System.Data.SQLite.dll"/>
+                  <File Id="App" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe"/>
+                  <File Id="Config" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe.config"/>
+                  <File Id="Datalayer" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.Datalayer.dll"/>
+                  <File Id="Tracing" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.Tracing.dll"/>
+                  <File Id="SQLite" Source="..\ActivityLogger.GUI\bin\Release\SQLite.Interop.dll"/>
+                  <File Id="SQLiteConnector" Source="..\ActivityLogger.GUI\bin\Release\System.Data.SQLite.dll"/>
                </Component>
             </Directory>
          </Directory>
