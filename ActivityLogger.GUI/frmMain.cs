@@ -26,6 +26,34 @@ namespace ActivityLogger.GUI
             ALT.TraceStopConstructor("frmMain");
         }
 
+        private void CreateDefaultDataFile()
+        {
+            ALT.TraceStart("frmMain", "CreateDefaultDataFile");
+
+            if (Properties.Settings.Default.DataFilePath == String.Empty)
+            {
+                // This is the first run
+                string appDataFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Activity Logger");
+
+                try
+                {
+                    if (!System.IO.Directory.Exists(appDataFolder))
+                    {
+                        System.IO.Directory.CreateDirectory(appDataFolder);
+                    }
+                    Properties.Settings.Default.DataFilePath = System.IO.Path.Combine(appDataFolder, Properties.Settings.Default.DefaultFileName);
+                    Properties.Settings.Default.Save();
+                }
+                catch
+                {
+                    MessageBox.Show("Could not create the default activity storage file, please specify a location of this file.", "Could not create activity file.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ChangeDataFile();
+                }
+            }
+
+            ALT.TraceStop("frmMain", "CreateDefaultDataFile");
+        }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             ALT.TraceStart("frmMain", "frmMain");
@@ -87,6 +115,7 @@ namespace ActivityLogger.GUI
         private void frmMain_Shown(object sender, EventArgs e)
         {
             this.Hide();
+            this.CreateDefaultDataFile();
         }
 
         private void aclIcon_MouseClick(object sender, MouseEventArgs e)
@@ -110,6 +139,11 @@ namespace ActivityLogger.GUI
         }
 
         private void changeDataFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeDataFile();
+        }
+
+        private void ChangeDataFile()
         {
             SaveFileDialog fd = new SaveFileDialog();
             fd.AddExtension = true;
