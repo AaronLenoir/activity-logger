@@ -11,11 +11,13 @@
       <Package InstallerVersion="200"
 			   Compressed="yes"
 			   Comments="Windows Installer Package"/>
-	  
-	  <UIRef Id="WixUI_ActivityLogger" />
       
 	  <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
       
+	  <!-- Include a user interface - to be modified later -->
+      <UIRef Id="WixUI_InstallDir" />
+	  <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
+	  
 	  <Icon Id="ProductIcon" SourceFile="..\ActivityLogger.GUI\Images\Apps-preferences-system-time.ico"/>
       <Property Id="ARPPRODUCTICON" Value="ProductIcon"/>
       <Property Id="ARPHELPLINK" Value="https://github.com/AaronLenoir/activity-logger/wiki"/>
@@ -46,45 +48,14 @@
                </Component>
             </Directory>
          </Directory>
- 
-		 <!--
-         <Directory Id="ProgramMenuFolder">
-            <Directory Id="ProgramMenuSubfolder" Name="Example">
-               <Component Id="ApplicationShortcuts" Guid="$(var.ProductGuid)">
-                  <Shortcut Id="ApplicationShortcut1" Name="Example Shortcut Name" Description="Example Product Name" 
-                            Target="[INSTALLDIR]example.exe" WorkingDirectory="INSTALLDIR"/>
-                  <RegistryValue Root="HKCU" Key="Software\Example Company Name\Example Product Name" 
-                            Name="installed" Type="integer" Value="1" KeyPath="yes"/>
-                  <RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
-               </Component>
-            </Directory>
-         </Directory>
-		 -->
       </Directory>
 	  
-	  <!-- Auto Start -->
-	  <Property Id="ASSISTANCE_START_VIA_REGISTRY">1</Property>
-
-	  <!-- Auto-start via Registry -->
-	  <Component Id="ActivityLoggerAutostart" Guid="e51d8a37-14d0-46d7-be98-a2f6d09461cb" Directory="TARGETDIR">
-		<RegistryValue Root="HKMU"
-					   Action="write"
-					   Key="Software\Microsoft\Windows\CurrentVersion\Run"
-					   Name="Activity Logger"
-					   Value="[INSTALLDIR]ActivityLogger.GUI.exe"
-					   Type="string" />
-		<Condition>ASSISTANCE_START_VIA_REGISTRY</Condition>
-	  </Component>
-
- 
       <InstallExecuteSequence>
          <RemoveExistingProducts After="InstallValidate"/>
       </InstallExecuteSequence>
 	  
       <Feature Id="DefaultFeature" Level="1">
          <ComponentRef Id="ApplicationFiles"/>
-		 <ComponentRef Id="ActivityLoggerAutostart" />
-         <!-- <ComponentRef Id="ApplicationShortcuts"/>	-->
       </Feature>
    </Product>
 </Wix>
