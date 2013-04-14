@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityDuration.cs" />
+    <Compile Include="AutoStartHelper.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

@@ -116,6 +116,7 @@ namespace ActivityLogger.GUI
         {
             this.Hide();
             this.CreateDefaultDataFile();
+            this.SetAutoStartMenuItem();
         }
 
         private void aclIcon_MouseClick(object sender, MouseEventArgs e)
@@ -136,6 +137,32 @@ namespace ActivityLogger.GUI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void SetAutoStartMenuItem()
+        {
+            if (AutoStartHelper.HasAutoStartConfigured())
+            {
+                autoStartMenuItem.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                autoStartMenuItem.CheckState = CheckState.Checked;
+            }
+        }
+
+        private void autoStartMenuItem_Click(object sender, EventArgs e)
+        {
+            if (AutoStartHelper.HasAutoStartConfigured())
+            {
+                AutoStartHelper.RemoveAutoStart();
+            }
+            else
+            {
+                AutoStartHelper.SetAutoStart();
+            }
+
+            SetAutoStartMenuItem();
         }
 
         private void changeDataFileToolStripMenuItem_Click(object sender, EventArgs e)

@@ -38,6 +38,9 @@
             this.changeDataFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoStartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,10 +83,12 @@
             this.viewActivitiesToolStripMenuItem,
             this.changeDataFileToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.settingsToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.exitToolStripMenuItem});
             this.ctxMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.ctxMenu.Name = "ctxMenu";
-            this.ctxMenu.Size = new System.Drawing.Size(176, 98);
+            this.ctxMenu.Size = new System.Drawing.Size(176, 126);
             // 
             // viewActivitiesToolStripMenuItem
             // 
@@ -110,6 +115,26 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.autoStartMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // autoStartMenuItem
+            // 
+            this.autoStartMenuItem.Name = "autoStartMenuItem";
+            this.autoStartMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.autoStartMenuItem.Text = "Start On System Startup";
+            this.autoStartMenuItem.Click += new System.EventHandler(this.autoStartMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
             // 
             // frmMain
             // 
@@ -150,6 +175,9 @@
         private System.Windows.Forms.ToolStripMenuItem viewActivitiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem changeDataFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem autoStartMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }
 
