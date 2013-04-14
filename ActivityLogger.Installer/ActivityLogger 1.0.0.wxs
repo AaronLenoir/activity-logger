@@ -15,7 +15,14 @@
 	  <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
       
 	  <!-- Include a user interface - to be modified later -->
-      <UIRef Id="WixUI_InstallDir" />
+	  <UI>
+		<UIRef Id="WixUI_InstallDir" />
+		<Publish Dialog="ExitDialog" 
+                 Control="Finish" 
+                 Event="DoAction" 
+                 Value="LaunchInstalledExe">NOT Installed</Publish>
+	  </UI>
+	  <!-- <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Launch Activity Logger" /> -->
 	  <Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />
 	  
 	  <Icon Id="ProductIcon" SourceFile="..\ActivityLogger.GUI\Images\Apps-preferences-system-time.ico"/>
@@ -46,16 +53,37 @@
                   <File Id="SQLite" Source="..\ActivityLogger.GUI\bin\Release\SQLite.Interop.dll"/>
                   <File Id="SQLiteConnector" Source="..\ActivityLogger.GUI\bin\Release\System.Data.SQLite.dll"/>
                </Component>
+			   
+			  <!-- Auto-start via Registry -->
+			  <Component Id="ActivityLoggerAutostart" Guid="273B31C5-B7A4-478E-AF3C-49B24BBD4BD5">
+				<RegistryValue Id="MerAs.rst" Root="HKCU" Action="write"
+						  Key="Software\Microsoft\Windows\CurrentVersion\Run"
+						  Name="ActivityLogger"
+						  Value='"[APPLICATIONFOLDER]ActivityLogger.GUI.exe"'
+						  Type="string" />
+				<Condition>ASSISTANCE_START_VIA_REGISTRY = 1</Condition>
+			  </Component>
             </Directory>
          </Directory>
       </Directory>
 	  
+	  <Property Id="ASSISTANCE_START_VIA_REGISTRY">1</Property>
+
       <InstallExecuteSequence>
          <RemoveExistingProducts After="InstallValidate"/>
       </InstallExecuteSequence>
 	  
       <Feature Id="DefaultFeature" Level="1">
-         <ComponentRef Id="ApplicationFiles"/>
+         <ComponentRef Id="ApplicationFiles"/> 
+		 <ComponentRef Id="ActivityLoggerAutostart" />
       </Feature>
+
+      <!-- Include the custom action to start on installation completion -->
+      <CustomAction Id="LaunchInstalledExe"
+         FileKey="App"
+         ExeCommand="" 
+         Execute="immediate" 
+         Impersonate="yes" 
+         Return="asyncNoWait" />
    </Product>
 </Wix>

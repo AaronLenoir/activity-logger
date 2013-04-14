@@ -147,7 +147,7 @@ namespace ActivityLogger.GUI
             }
             else
             {
-                autoStartMenuItem.CheckState = CheckState.Checked;
+                autoStartMenuItem.CheckState = CheckState.Unchecked;
             }
         }
 
