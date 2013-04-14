@@ -3,4 +3,4 @@ activity-logger
 
 Quick and simple tool to help keep track of what I'm working on during a working-day.
 
-I'll be putting some kind of installer on sourceforge soon ...
+Get the installer at sourceforge: http://sourceforge.net/projects/activitylogger/files/
