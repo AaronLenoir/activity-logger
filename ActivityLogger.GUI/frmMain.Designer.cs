@@ -37,10 +37,11 @@
             this.viewActivitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changeDataFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoStartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logStartupShutdownMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,17 +110,11 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
             // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.exitToolStripMenuItem.Text = "&Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.autoStartMenuItem});
+            this.autoStartMenuItem,
+            this.logStartupShutdownMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -127,7 +122,7 @@
             // autoStartMenuItem
             // 
             this.autoStartMenuItem.Name = "autoStartMenuItem";
-            this.autoStartMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.autoStartMenuItem.Size = new System.Drawing.Size(200, 22);
             this.autoStartMenuItem.Text = "Start On System Startup";
             this.autoStartMenuItem.Click += new System.EventHandler(this.autoStartMenuItem_Click);
             // 
@@ -135,6 +130,20 @@
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 6);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.exitToolStripMenuItem.Text = "&Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // logStartupShutdownMenuItem
+            // 
+            this.logStartupShutdownMenuItem.Name = "logStartupShutdownMenuItem";
+            this.logStartupShutdownMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.logStartupShutdownMenuItem.Text = "Log Startup / Shutdown";
+            this.logStartupShutdownMenuItem.Click += new System.EventHandler(this.logStartupShutdownMenuItem_Click);
             // 
             // frmMain
             // 
@@ -157,6 +166,7 @@
             this.Text = "Activity Logger";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.Shown += new System.EventHandler(this.frmMain_Shown);
             this.ctxMenu.ResumeLayout(false);
@@ -178,6 +188,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem autoStartMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem logStartupShutdownMenuItem;
     }
 }
 

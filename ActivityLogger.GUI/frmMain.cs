@@ -1,13 +1,8 @@
 ﻿using ActivityLogger.Tracing;
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace ActivityLogger.GUI
 {
@@ -21,7 +16,7 @@ namespace ActivityLogger.GUI
             ALT.TraceStartConstructor("frmMain");
 
             InitializeComponent();
-            this.mScreenSize = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            this.mScreenSize = Screen.PrimaryScreen.Bounds;
 
             ALT.TraceStopConstructor("frmMain");
         }
@@ -58,7 +53,14 @@ namespace ActivityLogger.GUI
         {
             ALT.TraceStart("frmMain", "frmMain");
 
+            LogStartup();
+
             ALT.TraceStop("frmMain", "frmMain_Load");
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            LogShutdown();
         }
 
         private void SetPosition(Point baseLocation)
@@ -102,9 +104,7 @@ namespace ActivityLogger.GUI
             {
                 this.Hide();
 
-                // Queue the activity save call
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(DataManager.AddActivity), 
-                                                              new Object[] { this.textBox1.Text, DateTime.Now });
+                DataManager.AddActivityAsync(this.textBox1.Text, DateTime.Now);
 
                 this.textBox1.Text = String.Empty;
             }
@@ -116,7 +116,7 @@ namespace ActivityLogger.GUI
         {
             this.Hide();
             this.CreateDefaultDataFile();
-            this.SetAutoStartMenuItem();
+            this.RefreshMenuItems();
         }
 
         private void aclIcon_MouseClick(object sender, MouseEventArgs e)
@@ -137,6 +137,23 @@ namespace ActivityLogger.GUI
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void RefreshMenuItems()
+        {
+            SetAutoStartMenuItem();
+            SetLogStartupShutdownMenuItem();
+        }
+
+        private void SetLogStartupShutdownMenuItem()
+        {
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                logStartupShutdownMenuItem.CheckState = CheckState.Checked;
+            } else
+            {
+                logStartupShutdownMenuItem.CheckState = CheckState.Unchecked;
+            }
         }
 
         private void SetAutoStartMenuItem()
@@ -190,5 +207,27 @@ namespace ActivityLogger.GUI
             form.Show();
         }
 
+        private void LogStartup()
+        {
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                DataManager.AddActivityAsync("Activity Logger Started", DateTime.Now);
+            }
+        }
+
+        private void LogShutdown()
+        {
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                DataManager.AddActivityAsync("Activity Logger Stopped", DateTime.Now);
+            }
+        }
+
+        private void logStartupShutdownMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LogStartupShutdown = !Properties.Settings.Default.LogStartupShutdown;
+            Properties.Settings.Default.Save();
+            SetLogStartupShutdownMenuItem();
+        }
     }
 }

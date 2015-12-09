@@ -8,5 +8,8 @@
     <Setting Name="DefaultFileName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">activity.dat</Value>
     </Setting>
+    <Setting Name="LogStartupShutdown" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -2,9 +2,6 @@
 using ActivityLogger.Tracing;
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ActivityLogger.GUI
 {
@@ -12,6 +9,13 @@ namespace ActivityLogger.GUI
     {
 
         protected const String cTimeRegex = "^[0-9]{1,2}:[0-9]{2} ?([PpAa][Mm])?( ){1}";
+
+        public static void AddActivityAsync(string message, DateTime timestamp)
+        {
+            // Queue the activity save call
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(AddActivity),
+                                                          new Object[] { message, timestamp });
+        }
 
         public static void AddActivity(object stateInfo)
         {
