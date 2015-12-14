@@ -7,7 +7,6 @@ namespace ActivityLogger.GUI
 {
     public class AutoStartHelper
     {
-
         public static bool HasAutoStartConfigured()
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", false);
@@ -30,6 +29,5 @@ namespace ActivityLogger.GUI
             RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             key.DeleteValue("ActivityLogger", false);
         }
-
     }
 }

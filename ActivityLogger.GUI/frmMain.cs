@@ -1,6 +1,4 @@
-﻿using ActivityLogger.Tracing;
-
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -8,23 +6,16 @@ namespace ActivityLogger.GUI
 {
     public partial class frmMain : Form
     {
-
         Rectangle mScreenSize;
 
         public frmMain()
         {
-            ALT.TraceStartConstructor("frmMain");
-
             InitializeComponent();
             this.mScreenSize = Screen.PrimaryScreen.Bounds;
-
-            ALT.TraceStopConstructor("frmMain");
         }
 
         private void CreateDefaultDataFile()
         {
-            ALT.TraceStart("frmMain", "CreateDefaultDataFile");
-
             if (Properties.Settings.Default.DataFilePath == String.Empty)
             {
                 // This is the first run
@@ -45,17 +36,11 @@ namespace ActivityLogger.GUI
                     ChangeDataFile();
                 }
             }
-
-            ALT.TraceStop("frmMain", "CreateDefaultDataFile");
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            ALT.TraceStart("frmMain", "frmMain");
-
             LogStartup();
-
-            ALT.TraceStop("frmMain", "frmMain_Load");
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,8 +50,6 @@ namespace ActivityLogger.GUI
 
         private void SetPosition(Point baseLocation)
         {
-            ALT.TraceStart("frmMain", "aclIcon_Click");
-
             int x = baseLocation.X;
             int y = baseLocation.Y;
 
@@ -83,23 +66,15 @@ namespace ActivityLogger.GUI
             }
 
             this.Location = new Point(x, y);
-
-            //this.Size = new Size(this.textBox1.Size.Width + this.label1.Width, this.textBox1.Size.Height);
-
-            ALT.TraceStop("frmMain", "aclIcon_Click");
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            ALT.TraceStart("frmMain", "label1_Click");
             this.Hide();
-            ALT.TraceStop("frmMain", "label1_Click");
         }
 
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            ALT.TraceStart("frmMain", "textBox1_KeyUp");
-
             if (e.KeyCode == Keys.Return)
             {
                 this.Hide();
@@ -108,8 +83,6 @@ namespace ActivityLogger.GUI
 
                 this.textBox1.Text = String.Empty;
             }
-
-            ALT.TraceStop("frmMain", "textBox1_KeyUp");
         }
 
         private void frmMain_Shown(object sender, EventArgs e)
@@ -121,8 +94,6 @@ namespace ActivityLogger.GUI
 
         private void aclIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            ALT.TraceStart("frmMain", "aclIcon_MouseClick");
-
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 this.Show();
@@ -130,8 +101,6 @@ namespace ActivityLogger.GUI
                 this.SetPosition(System.Windows.Forms.Cursor.Position);
                 this.textBox1.Focus();
             }
-
-            ALT.TraceStop("frmMain", "aclIcon_MouseClick");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
