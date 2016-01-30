@@ -22,6 +22,8 @@ namespace ActivityLogger.GUI
         public delegate void InactivityEndedHandler(object sender, InactivityEndedEventArgs e);
         private InactivityEndedHandler _endedHandler;
 
+        private Timer _runningTimer;
+
         public InactivitySensor(TimeSpan triggerTime,
                                 InactivityStartedHandler startedHandler,
                                 InactivityEndedHandler endedHandler) 
@@ -81,7 +83,7 @@ namespace ActivityLogger.GUI
                 {
                     Log(string.Format("Idle ended detected."));
                     _triggered = false;
-                    Log(string.Format("StartedHandler called."));
+                    Log(string.Format("EndedHandler called."));
                     _endedHandler(this, new InactivityEndedEventArgs());
                 }
             }
@@ -98,7 +100,10 @@ namespace ActivityLogger.GUI
         private void ScheduleCheckOnce(TimeSpan delay)
         {
             Log(string.Format("Scheduling once (TimeSpan): {0}", delay.TotalSeconds));
-            Timer t = new Timer(Tick, null, delay, new TimeSpan(0, 0, 0, 0, -1));
+
+            if (_runningTimer != null) { _runningTimer.Dispose(); }
+
+            _runningTimer = new Timer(Tick, null, delay, new TimeSpan(0, 0, 0, 0, -1));
         }
 
         private DateTime _testStartTime = DateTime.Now;
