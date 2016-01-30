@@ -67,5 +67,14 @@ namespace ActivityLogger.GUI.Properties {
                 this["LogInactivity"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public int IdleTriggerTime {
+            get {
+                return ((int)(this["IdleTriggerTime"]));
+            }
+        }
     }
 }

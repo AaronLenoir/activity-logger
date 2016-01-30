@@ -42,7 +42,8 @@ namespace ActivityLogger.GUI
         private void frmMain_Load(object sender, EventArgs e)
         {
             LogStartup();
-            mInactivitySensor = new InactivitySensor(new TimeSpan(0,0,30), LogInactivityStarted, LogInactivityEnded);
+            mInactivitySensor = new InactivitySensor(new TimeSpan(0,0,Properties.Settings.Default.IdleTriggerTime), 
+                                                     LogInactivityStarted, LogInactivityEnded);
             mInactivitySensor.Start();
         }
 
