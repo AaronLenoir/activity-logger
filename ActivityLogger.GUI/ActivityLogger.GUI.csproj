@@ -79,6 +79,8 @@
     <Compile Include="frmViewActivities.Designer.cs">
       <DependentUpon>frmViewActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="InactivitySensor.cs" />
+    <Compile Include="LASTINPUTINFO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMain.resx">

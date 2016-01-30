@@ -55,5 +55,17 @@ namespace ActivityLogger.GUI.Properties {
                 this["LogStartupShutdown"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LogInactivity {
+            get {
+                return ((bool)(this["LogInactivity"]));
+            }
+            set {
+                this["LogInactivity"] = value;
+            }
+        }
     }
 }

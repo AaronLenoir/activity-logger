@@ -7,6 +7,7 @@ namespace ActivityLogger.GUI
     public partial class frmMain : Form
     {
         Rectangle mScreenSize;
+        InactivitySensor mInactivitySensor;
 
         public frmMain()
         {
@@ -41,6 +42,8 @@ namespace ActivityLogger.GUI
         private void frmMain_Load(object sender, EventArgs e)
         {
             LogStartup();
+            mInactivitySensor = new InactivitySensor(new TimeSpan(0,0,30), LogInactivityStarted, LogInactivityEnded);
+            mInactivitySensor.Start();
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -176,6 +179,13 @@ namespace ActivityLogger.GUI
             form.Show();
         }
 
+        private void logStartupShutdownMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LogStartupShutdown = !Properties.Settings.Default.LogStartupShutdown;
+            Properties.Settings.Default.Save();
+            SetLogStartupShutdownMenuItem();
+        }
+
         private void LogStartup()
         {
             if (Properties.Settings.Default.LogStartupShutdown)
@@ -192,11 +202,21 @@ namespace ActivityLogger.GUI
             }
         }
 
-        private void logStartupShutdownMenuItem_Click(object sender, EventArgs e)
+        private void LogInactivityStarted(object sender, InactivitySensor.InactivityStartedEventArgs e)
         {
-            Properties.Settings.Default.LogStartupShutdown = !Properties.Settings.Default.LogStartupShutdown;
-            Properties.Settings.Default.Save();
-            SetLogStartupShutdownMenuItem();
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                DataManager.AddActivityAsync(string.Format("Away for {0} minutes.", e.TriggerTime.TotalMinutes), DateTime.Now);
+            }
         }
+
+        private void LogInactivityEnded(object sender, InactivitySensor.InactivityEndedEventArgs e)
+        {
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                DataManager.AddActivityAsync("Back.", DateTime.Now);
+            }
+        }
+
     }
 }
