@@ -14,7 +14,12 @@ namespace ActivityLogger.GUI
                                                           new Object[] { message, timestamp });
         }
 
-        public static void AddActivity(object stateInfo)
+        public static void AddActivity(string message, DateTime timestamp)
+        {
+            AddActivity(new Object[] { message, timestamp });
+        }
+
+        private static void AddActivity(object stateInfo)
         {
             string description = (string)((Object[])stateInfo)[0];
             DateTime timestamp = (DateTime)((Object[])stateInfo)[1];

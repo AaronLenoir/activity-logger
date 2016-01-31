@@ -199,7 +199,7 @@ namespace ActivityLogger.GUI
         {
             if (Properties.Settings.Default.LogStartupShutdown)
             {
-                DataManager.AddActivityAsync("Activity Logger Stopped", DateTime.Now);
+                DataManager.AddActivity("Activity Logger Stopped", DateTime.Now);
             }
         }
 

@@ -1,7 +1,10 @@
 <?xml version="1.0"?>
-<?define ProductVersion = "1.0.5"?>
-<?define ProductGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<?define ProductVersion = "1.0.11"?>
+<!-- 1.0.0 Guid: -->
+<!--<?define ProductGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?> -->
+<?define ProductGuid = "ECBD7A56-C86B-11E5-996A-BEAF5671DD9F"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Product Id="$(var.ProductGuid)"
      UpgradeCode="$(var.ProductGuid)"
            Name="Activity Logger"
@@ -45,7 +48,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="APPLICATIONFOLDER" Name="Activity Logger">
-          <Component Id="ApplicationFiles" Guid="649939bc-4828-4dc7-8913-456ccbd22fb7">
+          <Component Id="ApplicationFiles" Guid="F7B345BC-C86B-11E5-8CDE-BEAF5671DD9F">
             <File Id="App" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe"/>
             <File Id="Config" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe.config"/>
             <File Id="Datalayer" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.Datalayer.dll"/>
@@ -54,7 +57,7 @@
           </Component>
 
           <!-- Auto-start via Registry -->
-          <Component Id="ActivityLoggerAutostart" Guid="273B31C5-B7A4-478E-AF3C-49B24BBD4BD5">
+          <Component Id="ActivityLoggerAutostart" Guid="00A37160-C86C-11E5-A29E-BEAF5671DD9F">
             <RegistryValue Id="MerAs.rst" Root="HKCU" Action="write"
                   Key="Software\Microsoft\Windows\CurrentVersion\Run"
                   Name="ActivityLogger"
@@ -68,10 +71,6 @@
 
     <Property Id="ASSISTANCE_START_VIA_REGISTRY">1</Property>
 
-    <InstallExecuteSequence>
-      <RemoveExistingProducts After="InstallValidate"/>
-    </InstallExecuteSequence>
-
     <Feature Id="DefaultFeature" Level="1">
       <ComponentRef Id="ApplicationFiles"/>
       <ComponentRef Id="ActivityLoggerAutostart" />
@@ -84,5 +83,16 @@
        Execute="immediate"
        Impersonate="yes"
        Return="asyncNoWait" />
+
+    <!-- Close Application If Running -->
+    <util:CloseApplication Id="CloseApp"
+                           CloseMessage="yes"
+                           RebootPrompt="no"
+                           Target="ActivityLogger.GUI.exe" />
+
+    <InstallExecuteSequence>
+        <RemoveExistingProducts After="InstallValidate"/>
+    </InstallExecuteSequence>
+
   </Product>
 </Wix>
