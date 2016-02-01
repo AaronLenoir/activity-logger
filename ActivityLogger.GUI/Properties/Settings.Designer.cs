@@ -58,7 +58,7 @@ namespace ActivityLogger.GUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool LogInactivity {
             get {
                 return ((bool)(this["LogInactivity"]));
@@ -70,7 +70,7 @@ namespace ActivityLogger.GUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
         public int IdleTriggerTime {
             get {
                 return ((int)(this["IdleTriggerTime"]));

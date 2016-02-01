@@ -42,14 +42,13 @@ namespace ActivityLogger.GUI
         private void frmMain_Load(object sender, EventArgs e)
         {
             LogStartup();
-            mInactivitySensor = new InactivitySensor(new TimeSpan(0,0,Properties.Settings.Default.IdleTriggerTime), 
-                                                     LogInactivityStarted, LogInactivityEnded);
-            mInactivitySensor.Start();
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Log("Form closing triggered ...");
             LogShutdown();
+            Log("Form closing handler complete ...");
         }
 
         private void SetPosition(Point baseLocation)
@@ -116,6 +115,7 @@ namespace ActivityLogger.GUI
         {
             SetAutoStartMenuItem();
             SetLogStartupShutdownMenuItem();
+            SetLogInactivityMenuItem();
         }
 
         private void SetLogStartupShutdownMenuItem()
@@ -123,10 +123,26 @@ namespace ActivityLogger.GUI
             if (Properties.Settings.Default.LogStartupShutdown)
             {
                 logStartupShutdownMenuItem.CheckState = CheckState.Checked;
-            } else
+            }
+            else
             {
                 logStartupShutdownMenuItem.CheckState = CheckState.Unchecked;
             }
+        }
+
+        private void SetLogInactivityMenuItem()
+        {
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                logInactivityMenuItem.CheckState = CheckState.Checked;
+                StartInactivityLogger();
+            }
+            else
+            {
+                logInactivityMenuItem.CheckState = CheckState.Unchecked;
+                StopInactivityLogger();
+            }
+
         }
 
         private void SetAutoStartMenuItem()
@@ -187,6 +203,13 @@ namespace ActivityLogger.GUI
             SetLogStartupShutdownMenuItem();
         }
 
+        private void logInactivityMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LogInactivity = !Properties.Settings.Default.LogInactivity;
+            Properties.Settings.Default.Save();
+            SetLogInactivityMenuItem();
+        }
+
         private void LogStartup()
         {
             if (Properties.Settings.Default.LogStartupShutdown)
@@ -197,9 +220,32 @@ namespace ActivityLogger.GUI
 
         private void LogShutdown()
         {
+            Log("Log Shutdown?");
+
             if (Properties.Settings.Default.LogStartupShutdown)
             {
+                Log("Logging shutdown.");
+
                 DataManager.AddActivity("Activity Logger Stopped", DateTime.Now);
+            }
+        }
+
+        private void StartInactivityLogger()
+        {
+            if (mInactivitySensor == null)
+            {
+                mInactivitySensor = new InactivitySensor(new TimeSpan(0, 0, Properties.Settings.Default.IdleTriggerTime),
+                                                         LogInactivityStarted, LogInactivityEnded);
+            }
+
+            mInactivitySensor.Start();
+        }
+
+        private void StopInactivityLogger()
+        {
+            if (mInactivitySensor != null)
+            {
+                mInactivitySensor.Stop();
             }
         }
 
@@ -219,5 +265,10 @@ namespace ActivityLogger.GUI
             }
         }
 
+        // TODO: Remove this.
+        private void Log(string message)
+        {
+            System.IO.File.AppendAllText(@"C:\temp\act.log", string.Format("{0}: {1}\r\n", DateTime.Now.ToString(), message));
+        }
     }
 }

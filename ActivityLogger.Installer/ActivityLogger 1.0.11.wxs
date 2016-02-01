@@ -6,11 +6,11 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Product Id="$(var.ProductGuid)"
-     UpgradeCode="$(var.ProductGuid)"
-           Name="Activity Logger"
-     Version="$(var.ProductVersion)"
-     Manufacturer="Aaron Lenoir"
-     Language="1033">
+		UpgradeCode="$(var.ProductGuid)"
+		Name="Activity Logger"
+		Version="$(var.ProductVersion)"
+		Manufacturer="Aaron Lenoir"
+		Language="1033">
     <Package InstallerVersion="200"
        Compressed="yes"
        Comments="Windows Installer Package"/>

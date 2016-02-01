@@ -58,32 +58,27 @@ namespace ActivityLogger.GUI
 
         public void Tick(object state)
         {
-            Log(string.Format("Tick."));
+            // Clear our old timer, we'll start a new one anyway.
+            _runningTimer.Dispose();
+            _runningTimer = null;
 
             if (!_started) {
-                Log("Not started ...");
                 return;
             }
 
             TimeSpan idleTime = RetrieveIdleTime();
 
-            Log(string.Format("Idle Time: {0}.", idleTime));
-
             if (idleTime.TotalSeconds >= TriggerTime.TotalSeconds)
             {
                 if (!_triggered)
                 {
-                    Log(string.Format("New idle detected."));
                     _triggered = true;
-                    Log(string.Format("StartedHandler called."));
                     _startedHandler(this, new InactivityStartedEventArgs(TriggerTime));
                 }
             } else {
                 if (_triggered)
                 {
-                    Log(string.Format("Idle ended detected."));
                     _triggered = false;
-                    Log(string.Format("EndedHandler called."));
                     _endedHandler(this, new InactivityEndedEventArgs());
                 }
             }
@@ -93,20 +88,16 @@ namespace ActivityLogger.GUI
 
         private void ScheduleCheckOnce(int delayInSeconds)
         {
-            Log(string.Format("Scheduling once (int): {0}", delayInSeconds));
             ScheduleCheckOnce(new TimeSpan(0, 0, delayInSeconds));
         }
 
         private void ScheduleCheckOnce(TimeSpan delay)
         {
-            Log(string.Format("Scheduling once (TimeSpan): {0}", delay.TotalSeconds));
-
-            if (_runningTimer != null) { _runningTimer.Dispose(); }
-
-            _runningTimer = new Timer(Tick, null, delay, new TimeSpan(0, 0, 0, 0, -1));
+            // Only schedule a run if no other timer is running.
+            if (_runningTimer == null) {
+                _runningTimer = new Timer(Tick, null, delay, new TimeSpan(0, 0, 0, 0, -1));
+            }
         }
-
-        private DateTime _testStartTime = DateTime.Now;
 
         [DllImport("user32.dll")]
         static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
@@ -135,12 +126,6 @@ namespace ActivityLogger.GUI
 
             if (elapsedTicks > 0) { return new TimeSpan(0, 0, 0, 0, elapsedTicks); }
             else { return new TimeSpan(0); }
-        }
-
-        // TODO: Remove this.
-        private void Log(string message)
-        {
-            System.IO.File.AppendAllText(@"C:\temp\act.log", string.Format("{0}: {1}\r\n", DateTime.Now.ToString(), message));
         }
 
     }
