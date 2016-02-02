@@ -1,12 +1,11 @@
 <?xml version="1.0"?>
-<?define ProductVersion = "1.0.11"?>
-<!-- 1.0.0 Guid: -->
-<!--<?define ProductGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?> -->
+<?define ProductVersion = "1.1.0"?>
 <?define ProductGuid = "ECBD7A56-C86B-11E5-996A-BEAF5671DD9F"?>
+<?define UpgradeGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
   <Product Id="$(var.ProductGuid)"
-		UpgradeCode="$(var.ProductGuid)"
+		UpgradeCode="$(var.UpgradeGuid)"
 		Name="Activity Logger"
 		Version="$(var.ProductVersion)"
 		Manufacturer="Aaron Lenoir"
@@ -37,7 +36,7 @@
     <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
 
     <!-- Upgrade Logic -->
-    <Upgrade Id="$(var.ProductGuid)">
+    <Upgrade Id="$(var.UpgradeGuid)">
       <UpgradeVersion Minimum="$(var.ProductVersion)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
       <UpgradeVersion Minimum="0.0.0" Maximum="$(var.ProductVersion)" IncludeMinimum="yes" IncludeMaximum="no"
                       Property="OLDERVERSIONBEINGUPGRADED"/>
@@ -48,7 +47,7 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="APPLICATIONFOLDER" Name="Activity Logger">
-          <Component Id="ApplicationFiles" Guid="F7B345BC-C86B-11E5-8CDE-BEAF5671DD9F">
+          <Component Id="ApplicationFiles" Guid="649939bc-4828-4dc7-8913-456ccbd22fb7">
             <File Id="App" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe"/>
             <File Id="Config" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.GUI.exe.config"/>
             <File Id="Datalayer" Source="..\ActivityLogger.GUI\bin\Release\ActivityLogger.Datalayer.dll"/>
@@ -57,7 +56,7 @@
           </Component>
 
           <!-- Auto-start via Registry -->
-          <Component Id="ActivityLoggerAutostart" Guid="00A37160-C86C-11E5-A29E-BEAF5671DD9F">
+          <Component Id="ActivityLoggerAutostart" Guid="273B31C5-B7A4-478E-AF3C-49B24BBD4BD5">
             <RegistryValue Id="MerAs.rst" Root="HKCU" Action="write"
                   Key="Software\Microsoft\Windows\CurrentVersion\Run"
                   Name="ActivityLogger"
@@ -87,6 +86,7 @@
     <!-- Close Application If Running -->
     <util:CloseApplication Id="CloseApp"
                            CloseMessage="yes"
+                           PromptToContinue="no"
                            RebootPrompt="no"
                            Target="ActivityLogger.GUI.exe" />
 
