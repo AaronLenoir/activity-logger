@@ -15,7 +15,16 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="IdleTriggerTime" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">60</Value>
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="InactivityMessage" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Away since {INACTIVITY_TIME} minutes.</Value>
+    </Setting>
+    <Setting Name="InactivityEndMessage" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Back.</Value>
+    </Setting>
+    <Setting Name="InactivityMenuMessage" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Log inactivity (&gt; {INACTIVITY_TIME} minutes)</Value>
     </Setting>
   </Settings>
 </SettingsFile>

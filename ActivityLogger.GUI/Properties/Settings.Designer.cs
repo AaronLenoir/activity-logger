@@ -70,10 +70,37 @@ namespace ActivityLogger.GUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
         public int IdleTriggerTime {
             get {
                 return ((int)(this["IdleTriggerTime"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Away since {INACTIVITY_TIME} minutes.")]
+        public string InactivityMessage {
+            get {
+                return ((string)(this["InactivityMessage"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Back.")]
+        public string InactivityEndMessage {
+            get {
+                return ((string)(this["InactivityEndMessage"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Log inactivity (> {INACTIVITY_TIME} minutes)")]
+        public string InactivityMenuMessage {
+            get {
+                return ((string)(this["InactivityMenuMessage"]));
             }
         }
     }

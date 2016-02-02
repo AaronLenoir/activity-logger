@@ -8,11 +8,24 @@ namespace ActivityLogger.GUI
     {
         Rectangle mScreenSize;
         InactivitySensor mInactivitySensor;
+        private readonly TimeSpan _inactivityTime;
+        private readonly string _inactivityMessage;
+        private readonly string _inactivityEndMessage;
 
         public frmMain()
         {
             InitializeComponent();
             this.mScreenSize = Screen.PrimaryScreen.Bounds;
+
+            _inactivityTime = new TimeSpan(0, 0, Properties.Settings.Default.IdleTriggerTime);
+
+            _inactivityMessage = Properties.Settings.Default.InactivityMessage.Replace("{INACTIVITY_TIME}",
+                                                                                        _inactivityTime.TotalMinutes.ToString());
+            _inactivityEndMessage = Properties.Settings.Default.InactivityEndMessage.Replace("{INACTIVITY_TIME}",
+                                                                                              _inactivityTime.TotalMinutes.ToString());
+            logInactivityMenuItem.Text = Properties.Settings.Default.InactivityMenuMessage.Replace("{INACTIVITY_TIME}",
+                                                                                             _inactivityTime.TotalMinutes.ToString());
+
         }
 
         private void CreateDefaultDataFile()
@@ -182,7 +195,7 @@ namespace ActivityLogger.GUI
             fd.AddExtension = true;
             fd.DefaultExt = "dat";
             fd.InitialDirectory = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(Properties.Settings.Default.DataFilePath));
-            if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fd.ShowDialog() == DialogResult.OK)
             {
                 Properties.Settings.Default.DataFilePath = fd.FileName;
                 Properties.Settings.Default.Save();
@@ -234,7 +247,7 @@ namespace ActivityLogger.GUI
         {
             if (mInactivitySensor == null)
             {
-                mInactivitySensor = new InactivitySensor(new TimeSpan(0, 0, Properties.Settings.Default.IdleTriggerTime),
+                mInactivitySensor = new InactivitySensor(_inactivityTime,
                                                          LogInactivityStarted, LogInactivityEnded);
             }
 
@@ -253,7 +266,7 @@ namespace ActivityLogger.GUI
         {
             if (Properties.Settings.Default.LogInactivity)
             {
-                DataManager.AddActivityAsync(string.Format("Away for {0} minutes.", e.TriggerTime.TotalMinutes), DateTime.Now);
+                DataManager.AddActivityAsync(_inactivityMessage, DateTime.Now);
             }
         }
 
@@ -261,7 +274,7 @@ namespace ActivityLogger.GUI
         {
             if (Properties.Settings.Default.LogInactivity)
             {
-                DataManager.AddActivityAsync("Back.", DateTime.Now);
+                DataManager.AddActivityAsync(_inactivityEndMessage, DateTime.Now);
             }
         }
 
