@@ -70,12 +70,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ActivityLogger.Tracing\ActivityLogger.Tracing.csproj">
-      <Project>{D5B27C99-C31B-457F-81A2-94C08E00367F}</Project>
-      <Name>ActivityLogger.Tracing</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SQLite.Interop.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

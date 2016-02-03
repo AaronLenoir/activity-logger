@@ -79,6 +79,8 @@
     <Compile Include="frmViewActivities.Designer.cs">
       <DependentUpon>frmViewActivities.cs</DependentUpon>
     </Compile>
+    <Compile Include="InactivitySensor.cs" />
+    <Compile Include="LASTINPUTINFO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmMain.resx">
@@ -112,10 +114,6 @@
     <ProjectReference Include="..\ActivityLogger.Datastore\ActivityLogger.Datalayer.csproj">
       <Project>{E0FF6EA6-409D-4996-A621-B16795BE3D16}</Project>
       <Name>ActivityLogger.Datalayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ActivityLogger.Tracing\ActivityLogger.Tracing.csproj">
-      <Project>{D5B27C99-C31B-457F-81A2-94C08E00367F}</Project>
-      <Name>ActivityLogger.Tracing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,35 +1,35 @@
-﻿using ActivityLogger.Tracing;
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace ActivityLogger.GUI
 {
     public partial class frmMain : Form
     {
-
         Rectangle mScreenSize;
+        InactivitySensor mInactivitySensor;
+        private readonly TimeSpan _inactivityTime;
+        private readonly string _inactivityMessage;
+        private readonly string _inactivityEndMessage;
 
         public frmMain()
         {
-            ALT.TraceStartConstructor("frmMain");
-
             InitializeComponent();
-            this.mScreenSize = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            this.mScreenSize = Screen.PrimaryScreen.Bounds;
 
-            ALT.TraceStopConstructor("frmMain");
+            _inactivityTime = new TimeSpan(0, 0, Properties.Settings.Default.IdleTriggerTime);
+
+            _inactivityMessage = Properties.Settings.Default.InactivityMessage.Replace("{INACTIVITY_TIME}",
+                                                                                        _inactivityTime.TotalMinutes.ToString());
+            _inactivityEndMessage = Properties.Settings.Default.InactivityEndMessage.Replace("{INACTIVITY_TIME}",
+                                                                                              _inactivityTime.TotalMinutes.ToString());
+            logInactivityMenuItem.Text = Properties.Settings.Default.InactivityMenuMessage.Replace("{INACTIVITY_TIME}",
+                                                                                             _inactivityTime.TotalMinutes.ToString());
+
         }
 
         private void CreateDefaultDataFile()
         {
-            ALT.TraceStart("frmMain", "CreateDefaultDataFile");
-
             if (Properties.Settings.Default.DataFilePath == String.Empty)
             {
                 // This is the first run
@@ -50,21 +50,22 @@ namespace ActivityLogger.GUI
                     ChangeDataFile();
                 }
             }
-
-            ALT.TraceStop("frmMain", "CreateDefaultDataFile");
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            ALT.TraceStart("frmMain", "frmMain");
+            LogStartup();
+        }
 
-            ALT.TraceStop("frmMain", "frmMain_Load");
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log("Form closing triggered ...");
+            LogShutdown();
+            Log("Form closing handler complete ...");
         }
 
         private void SetPosition(Point baseLocation)
         {
-            ALT.TraceStart("frmMain", "aclIcon_Click");
-
             int x = baseLocation.X;
             int y = baseLocation.Y;
 
@@ -81,48 +82,34 @@ namespace ActivityLogger.GUI
             }
 
             this.Location = new Point(x, y);
-
-            //this.Size = new Size(this.textBox1.Size.Width + this.label1.Width, this.textBox1.Size.Height);
-
-            ALT.TraceStop("frmMain", "aclIcon_Click");
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            ALT.TraceStart("frmMain", "label1_Click");
             this.Hide();
-            ALT.TraceStop("frmMain", "label1_Click");
         }
 
         private void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            ALT.TraceStart("frmMain", "textBox1_KeyUp");
-
             if (e.KeyCode == Keys.Return)
             {
                 this.Hide();
 
-                // Queue the activity save call
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(DataManager.AddActivity), 
-                                                              new Object[] { this.textBox1.Text, DateTime.Now });
+                DataManager.AddActivityAsync(this.textBox1.Text, DateTime.Now);
 
                 this.textBox1.Text = String.Empty;
             }
-
-            ALT.TraceStop("frmMain", "textBox1_KeyUp");
         }
 
         private void frmMain_Shown(object sender, EventArgs e)
         {
             this.Hide();
             this.CreateDefaultDataFile();
-            this.SetAutoStartMenuItem();
+            this.RefreshMenuItems();
         }
 
         private void aclIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            ALT.TraceStart("frmMain", "aclIcon_MouseClick");
-
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 this.Show();
@@ -130,13 +117,45 @@ namespace ActivityLogger.GUI
                 this.SetPosition(System.Windows.Forms.Cursor.Position);
                 this.textBox1.Focus();
             }
-
-            ALT.TraceStop("frmMain", "aclIcon_MouseClick");
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void RefreshMenuItems()
+        {
+            SetAutoStartMenuItem();
+            SetLogStartupShutdownMenuItem();
+            SetLogInactivityMenuItem();
+        }
+
+        private void SetLogStartupShutdownMenuItem()
+        {
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                logStartupShutdownMenuItem.CheckState = CheckState.Checked;
+            }
+            else
+            {
+                logStartupShutdownMenuItem.CheckState = CheckState.Unchecked;
+            }
+        }
+
+        private void SetLogInactivityMenuItem()
+        {
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                logInactivityMenuItem.CheckState = CheckState.Checked;
+                StartInactivityLogger();
+            }
+            else
+            {
+                logInactivityMenuItem.CheckState = CheckState.Unchecked;
+                StopInactivityLogger();
+            }
+
         }
 
         private void SetAutoStartMenuItem()
@@ -176,7 +195,7 @@ namespace ActivityLogger.GUI
             fd.AddExtension = true;
             fd.DefaultExt = "dat";
             fd.InitialDirectory = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(Properties.Settings.Default.DataFilePath));
-            if (fd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (fd.ShowDialog() == DialogResult.OK)
             {
                 Properties.Settings.Default.DataFilePath = fd.FileName;
                 Properties.Settings.Default.Save();
@@ -190,5 +209,79 @@ namespace ActivityLogger.GUI
             form.Show();
         }
 
+        private void logStartupShutdownMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LogStartupShutdown = !Properties.Settings.Default.LogStartupShutdown;
+            Properties.Settings.Default.Save();
+            SetLogStartupShutdownMenuItem();
+        }
+
+        private void logInactivityMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.LogInactivity = !Properties.Settings.Default.LogInactivity;
+            Properties.Settings.Default.Save();
+            SetLogInactivityMenuItem();
+        }
+
+        private void LogStartup()
+        {
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                DataManager.AddActivityAsync("Activity Logger Started", DateTime.Now);
+            }
+        }
+
+        private void LogShutdown()
+        {
+            Log("Log Shutdown?");
+
+            if (Properties.Settings.Default.LogStartupShutdown)
+            {
+                Log("Logging shutdown.");
+
+                DataManager.AddActivity("Activity Logger Stopped", DateTime.Now);
+            }
+        }
+
+        private void StartInactivityLogger()
+        {
+            if (mInactivitySensor == null)
+            {
+                mInactivitySensor = new InactivitySensor(_inactivityTime,
+                                                         LogInactivityStarted, LogInactivityEnded);
+            }
+
+            mInactivitySensor.Start();
+        }
+
+        private void StopInactivityLogger()
+        {
+            if (mInactivitySensor != null)
+            {
+                mInactivitySensor.Stop();
+            }
+        }
+
+        private void LogInactivityStarted(object sender, InactivitySensor.InactivityStartedEventArgs e)
+        {
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                DataManager.AddActivityAsync(_inactivityMessage, DateTime.Now);
+            }
+        }
+
+        private void LogInactivityEnded(object sender, InactivitySensor.InactivityEndedEventArgs e)
+        {
+            if (Properties.Settings.Default.LogInactivity)
+            {
+                DataManager.AddActivityAsync(_inactivityEndMessage, DateTime.Now);
+            }
+        }
+
+        // TODO: Remove this.
+        private void Log(string message)
+        {
+            System.IO.File.AppendAllText(@"C:\temp\act.log", string.Format("{0}: {1}\r\n", DateTime.Now.ToString(), message));
+        }
     }
 }

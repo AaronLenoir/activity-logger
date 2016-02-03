@@ -1,41 +1,28 @@
-﻿using ActivityLogger.Tracing;
-
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Text.RegularExpressions;
 
 namespace ActivityLogger.Datalayer
 {
     public class Activity
     {
-
         protected const String cTimeRegex = "^[0-9]{1,2}:[0-9]{2} ?([PpAa][Mm])?( ){1}";
 
         public Activity(string description)
         {
-            ALT.TraceStartConstructor("Activity");
-
             // Find out if the description holds a timestamp of its own
             DateTime timestamp = DateTime.Now;
             OverwriteDateTime(ref description, ref timestamp);
 
             this.Description = description;
             this.Timestamp = RoundDateTime(timestamp);
-
-            ALT.TraceStopConstructor("Activity");
         }
 
         public Activity(string description, DateTime timestamp)
         {
-           ALT.TraceStartConstructor("Activity");
-
            this.OverwriteDateTime(ref description, ref timestamp);
 
             this.Description = description;
             this.Timestamp = RoundDateTime(timestamp);
-
-            ALT.TraceStopConstructor("Activity");
         }
 
         public DateTime Timestamp { get; set; }
@@ -49,8 +36,6 @@ namespace ActivityLogger.Datalayer
 
         public void OverwriteDateTime(ref string description, ref DateTime timestamp)
         {
-            ALT.TraceStart("DateManager", "OverwriteDateTime");
-
             Regex reg = new Regex(cTimeRegex);
             Match m = reg.Match(description);
             if (m.Success)
@@ -70,9 +55,6 @@ namespace ActivityLogger.Datalayer
                     timestamp = DateTime.Now;
                 }
             }
-
-            ALT.TraceStop("DateManager", "OverwriteDateTime");
         }
-
     }
 }
