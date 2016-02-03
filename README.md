@@ -12,6 +12,7 @@ What's new:
 
 - Startup and Shutdown time (of the activity logger)
 - Idle time (> 5 minutes)
+- Switched to 2 clause BSD license
 
 Enable them via the context menu (right click on the icon).
 
