@@ -4,15 +4,16 @@ Quick and simple tool to help keep track of what I'm working on during a working
 
 ## Download
 
-## Version 1.1.0
+## Version 1.1.1
 
-https://files-aaronlenoir.rhcloud.com/ActivityLogger%201.1.0.msi
+https://files-aaronlenoir.rhcloud.com/ActivityLogger%201.1.1.msi
 
 What's new:
 
 - Startup and Shutdown time (of the activity logger)
 - Idle time (> 5 minutes)
 - Switched to 2 clause BSD license
+- 1.1.1 removes a debug log that was accidentally left in 1.1.0
 
 Enable them via the context menu (right click on the icon).
 
