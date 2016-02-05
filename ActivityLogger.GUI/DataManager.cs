@@ -22,18 +22,11 @@ namespace ActivityLogger.GUI
 
         private static void AddActivity(object stateInfo)
         {
-            Log("Adding activity ...");
             string description = (string)((Object[])stateInfo)[0];
             DateTime timestamp = (DateTime)((Object[])stateInfo)[1];
 
             ActivityDataStore ds = ActivityDataStore.CreateInstance(Properties.Settings.Default.DataFilePath);
             ds.AddActivity(new Activity(description, timestamp));
-            Log("Activity added ...");
-        }
-
-        private static void Log(string message)
-        {
-            System.IO.File.AppendAllText(@"C:\temp\act.log", string.Format("{0}: {1}\r\n", DateTime.Now.ToString(), message));
         }
     }
 }

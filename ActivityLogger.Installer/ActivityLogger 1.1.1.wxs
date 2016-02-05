@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<?define ProductVersion = "1.1.0"?>
-<?define ProductGuid = "ECBD7A56-C86B-11E5-996A-BEAF5671DD9F"?>
+<?define ProductVersion = "1.1.1"?>
+<?define ProductGuid = "2B3CF9CC-CC50-11E5-9715-D96D5671DD9F"?>
 <?define UpgradeGuid = "6972D562-859B-4E41-ACDF-3E49ABB3A0B9"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">

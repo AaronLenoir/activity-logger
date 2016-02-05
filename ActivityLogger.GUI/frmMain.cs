@@ -59,9 +59,7 @@ namespace ActivityLogger.GUI
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Log("Form closing triggered ...");
             LogShutdown();
-            Log("Form closing handler complete ...");
         }
 
         private void SetPosition(Point baseLocation)
@@ -233,12 +231,8 @@ namespace ActivityLogger.GUI
 
         private void LogShutdown()
         {
-            Log("Log Shutdown?");
-
             if (Properties.Settings.Default.LogStartupShutdown)
             {
-                Log("Logging shutdown.");
-
                 DataManager.AddActivity("Activity Logger Stopped", DateTime.Now);
             }
         }
@@ -276,12 +270,6 @@ namespace ActivityLogger.GUI
             {
                 DataManager.AddActivityAsync(_inactivityEndMessage, DateTime.Now);
             }
-        }
-
-        // TODO: Remove this.
-        private void Log(string message)
-        {
-            System.IO.File.AppendAllText(@"C:\temp\act.log", string.Format("{0}: {1}\r\n", DateTime.Now.ToString(), message));
         }
     }
 }
