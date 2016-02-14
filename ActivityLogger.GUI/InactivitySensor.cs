@@ -118,12 +118,6 @@ namespace ActivityLogger.GUI
             // it'll wrap and be crazy.
             // Need to fix this!
 
-            if (elapsedTicks != 0)
-            {
-                int i = 0;
-                i = i + 1;
-            }
-
             if (elapsedTicks > 0) { return new TimeSpan(0, 0, 0, 0, elapsedTicks); }
             else { return new TimeSpan(0); }
         }
