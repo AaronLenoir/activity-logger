@@ -6,7 +6,7 @@ Quick and simple tool to help keep track of what I'm working on during a working
 
 ## Version 1.1.1
 
-https://files-aaronlenoir.rhcloud.com/ActivityLogger%201.1.1.msi
+https://github.com/AaronLenoir/activity-logger/releases/download/v1.1.1/ActivityLogger.1.1.1.msi
 
 What's new:
 
